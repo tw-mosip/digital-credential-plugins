@@ -241,7 +241,6 @@ public class MockVCIssuancePlugin implements VCIssuancePlugin {
 	public VCResult<String> getVerifiableCredential(VCRequestDto vcRequestDto, String holderId,
 													Map<String, Object> identityDetails) throws VCIExchangeException {
 		String accessTokenHash = identityDetails.get(ACCESS_TOKEN_HASH).toString();
-        Map<String, Object> data = new HashMap<>();
         String documentNumber;
         try {
 			documentNumber = getIndividualId(getUserInfoTransaction(accessTokenHash));
@@ -250,25 +249,11 @@ public class MockVCIssuancePlugin implements VCIssuancePlugin {
 			throw new VCIExchangeException(ErrorConstants.VCI_EXCHANGE_FAILED);
 		}
 
-        log.info("Setting up the data for mDoc");
-		data.put("issue_date", "2024-01-12");
-		data.put("expiry_date", "2025-01-12");
-		data.put("family_name","Agatha");
-		data.put("given_name","Joseph");
-		data.put("birth_date", "1994-11-06");
-		data.put("issuing_country", "Island");
-		data.put("document_number",documentNumber);
-		data.put("driving_privileges",new HashMap<>(){{
-			put("vehicle_category_code","A");
-			put("issue_date","2023-01-01");
-			put("expiry_date","2043-01-01");
-		}});
-
 		if(vcRequestDto.getFormat().equals("mso_mdoc")){
 			VCResult<String> vcResult = new VCResult<>();
 			String mdocVc = null;
 			try {
-				 mdocVc = new io.mosip.certify.mock.integration.mocks.MdocGenerator().generate(data,holderId, caKeyAndCertificate,issuerKeyAndCertificate);
+				 mdocVc = new io.mosip.certify.mock.integration.mocks.MdocGenerator().generate(mockDataForMsoMdoc(documentNumber),holderId, caKeyAndCertificate,issuerKeyAndCertificate);
 			} catch (Exception e) {
                 log.error("Exception on mdoc creation", e);
 				throw new VCIExchangeException(ErrorConstants.VCI_EXCHANGE_FAILED);
@@ -279,6 +264,25 @@ public class MockVCIssuancePlugin implements VCIssuancePlugin {
 		}
         log.error("not implemented the format {}", vcRequestDto);
 		throw new VCIExchangeException(ErrorConstants.NOT_IMPLEMENTED);
+	}
+
+	private Map<String, Object> mockDataForMsoMdoc(String documentNumber) {
+		Map<String, Object> data = new HashMap<>();
+		log.info("Setting up the data for mDoc");
+		//TODO: Populate datetime in real time
+		data.put("issue_date", "2024-01-12");
+		data.put("expiry_date", "2025-01-12");
+		data.put("family_name","Agatha");
+		data.put("given_name","Joseph");
+		data.put("birth_date", "1994-11-06");
+		data.put("issuing_country", "Island");
+		data.put("document_number", documentNumber);
+		data.put("driving_privileges",new HashMap<>(){{
+			put("vehicle_category_code","A");
+			put("issue_date","2023-01-01");
+			put("expiry_date","2043-01-01");
+		}});
+		return data;
 	}
 
 	public OIDCTransaction getUserInfoTransaction(String accessTokenHash) {
