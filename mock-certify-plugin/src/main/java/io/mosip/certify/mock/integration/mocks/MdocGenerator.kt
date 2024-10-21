@@ -63,7 +63,7 @@ class MdocGenerator {
         val calculateDigestsForNameSpace =
             MdocUtil.calculateDigestsForNameSpace(NAMESPACE, generatedIssuerNameSpaces, DIGEST_ALGORITHM)
 
-        val mobileSecurityObjectGenerator = MobileSecurityObjectGenerator(DIGEST_ALGORITHM, NAMESPACE, devicePublicKey)
+        val mobileSecurityObjectGenerator = MobileSecurityObjectGenerator(DIGEST_ALGORITHM, DOCTYPE, devicePublicKey)
         mobileSecurityObjectGenerator.addDigestIdsForNamespace(NAMESPACE, calculateDigestsForNameSpace)
         //Validity of MSO & its signature is assigned here
         mobileSecurityObjectGenerator.setValidityInfo(
