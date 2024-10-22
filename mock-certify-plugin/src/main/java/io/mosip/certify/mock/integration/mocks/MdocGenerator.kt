@@ -14,6 +14,8 @@ import io.mosip.certify.util.KeyPairAndCertificate
 import io.mosip.certify.util.PKCS12Reader
 import java.io.ByteArrayOutputStream
 import java.time.Instant
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -34,16 +36,18 @@ class MdocGenerator {
     ): String? {
         val issuerDetails: KeyPairAndCertificate = PKCS12Reader().extract(issuerKeyAndCertificate)
 
-        if(issuerDetails.keyPair == null) {
+        if (issuerDetails.keyPair == null) {
             throw RuntimeException("Unable to load Crypto details")
         }
         val devicePublicKey = JwkToKeyConverter().convertToPublicKey(holderId.replace("did:jwk:", ""))
         val issuerKeypair = issuerDetails.keyPair
 
-        val issueDate = Instant.now()
-        val formattedIssueDate = issueDate.toString()
-        val expiryDate = issueDate.plus(365, ChronoUnit.DAYS)
-        val formattedExpiryDate = expiryDate.toString()
+
+        val fullDateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
+        val issueDate: LocalDate = LocalDate.now()
+        val formattedIssueDate: String = issueDate.format(fullDateFormatter)
+        val expiryDate = issueDate.plusYears(5)
+        val formattedExpiryDate = expiryDate.format(fullDateFormatter)
         val nameSpacedDataBuilder: NameSpacedData.Builder = NameSpacedData.Builder()
         //Validity of document is assigned here
         nameSpacedDataBuilder.putEntryString(NAMESPACE, "issue_date", (formattedIssueDate))
@@ -66,10 +70,12 @@ class MdocGenerator {
         val mobileSecurityObjectGenerator = MobileSecurityObjectGenerator(DIGEST_ALGORITHM, DOCTYPE, devicePublicKey)
         mobileSecurityObjectGenerator.addDigestIdsForNamespace(NAMESPACE, calculateDigestsForNameSpace)
         //Validity of MSO & its signature is assigned here
+        val currentTimestamp = Timestamp.now()
+        val validUntil = Timestamp.ofEpochMilli(addYearsToDate(currentTimestamp.toEpochMilli(), 2))
         mobileSecurityObjectGenerator.setValidityInfo(
-            Timestamp.now(),
-            Timestamp.now(),
-            Timestamp.ofEpochMilli(expiryDate.toEpochMilli()),
+            currentTimestamp,
+            currentTimestamp,
+            validUntil,
             null
         )
         val mso: ByteArray = mobileSecurityObjectGenerator.generate()
@@ -89,6 +95,13 @@ class MdocGenerator {
         val mDoc = MDoc(DOCTYPE, IssuerSigned(nameSpaces, issuerAuth))
         val cbor = mDoc.toCBOR()
         return Base64.getUrlEncoder().encodeToString(cbor)
+    }
+
+    private fun addYearsToDate(dateInEpochMillis: Long, years: Int): Long {
+        val instant: Instant = Instant.ofEpochMilli(dateInEpochMillis)
+        val futureInstant: Instant = instant.plus((years*365).toLong(), ChronoUnit.DAYS)
+
+        return futureInstant.toEpochMilli()
     }
 }
 
