@@ -28,6 +28,7 @@ class MdocGenerator {
         const val DIGEST_ALGORITHM = "SHA-256"
         const val ECDSA_ALGORITHM = "SHA256withECDSA"
         const val SEED = 42L
+        val FULL_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
     }
 
     fun generate(
@@ -44,11 +45,10 @@ class MdocGenerator {
         val issuerKeypair = issuerDetails.keyPair
 
 
-        val fullDateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
         val issueDate: LocalDate = LocalDate.now()
-        val formattedIssueDate: String = issueDate.format(fullDateFormatter)
+        val formattedIssueDate: String = issueDate.format(FULL_DATE_FORMATTER)
         val expiryDate = issueDate.plusYears(5)
-        val formattedExpiryDate = expiryDate.format(fullDateFormatter)
+        val formattedExpiryDate = expiryDate.format(FULL_DATE_FORMATTER)
         val nameSpacedDataBuilder: NameSpacedData.Builder = NameSpacedData.Builder()
         //Validity of document is assigned here
         nameSpacedDataBuilder.putEntryString(NAMESPACE, "issue_date", (formattedIssueDate))
