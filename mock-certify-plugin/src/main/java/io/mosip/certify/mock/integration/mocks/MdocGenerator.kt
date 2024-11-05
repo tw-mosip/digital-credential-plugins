@@ -12,6 +12,7 @@ import io.mosip.certify.util.CBORConverter
 import io.mosip.certify.util.JwkToKeyConverter
 import io.mosip.certify.util.KeyPairAndCertificate
 import io.mosip.certify.util.PKCS12Reader
+import io.mosip.certify.util.UUIDGenerator
 import java.io.ByteArrayOutputStream
 import java.time.Instant
 import java.time.LocalDate
@@ -34,6 +35,7 @@ class MdocGenerator {
         holderId: String,
         issuerKeyAndCertificate: String
     ): String? {
+        println("uuid ${UUID.randomUUID()}")
         val issuerDetails: KeyPairAndCertificate = PKCS12Reader().extract(issuerKeyAndCertificate)
 
         if (issuerDetails.keyPair == null) {
@@ -71,6 +73,7 @@ class MdocGenerator {
         mobileSecurityObjectGenerator.addDigestIdsForNamespace(NAMESPACE, calculateDigestsForNameSpace)
         //Validity of MSO & its signature is assigned here
         val currentTimestamp = Timestamp.now()
+        println("currentTimestamp: $currentTimestamp")
         val validUntil = Timestamp.ofEpochMilli(addYearsToDate(currentTimestamp.toEpochMilli(), 2))
         mobileSecurityObjectGenerator.setValidityInfo(
             currentTimestamp,
@@ -111,6 +114,7 @@ data class MDoc(val docType: String, val issuerSigned: IssuerSigned) {
         CborEncoder(byteArrayOutputStream).encode(
             CborBuilder().addMap()
                 .put("docType", docType)
+                .put("id", UUIDGenerator().generate())
                 .put(CBORConverter.toDataItem("issuerSigned"), CBORConverter.toDataItem(issuerSigned.toMap()))
                 .end()
                 .build()
