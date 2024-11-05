@@ -25,6 +25,7 @@ import io.mosip.certify.api.exception.VCIExchangeException;
 import io.mosip.certify.api.spi.VCIssuancePlugin;
 import io.mosip.certify.api.util.ErrorConstants;
 import io.mosip.certify.core.exception.CertifyException;
+import io.mosip.certify.util.UUIDGenerator;
 import io.mosip.esignet.core.dto.OIDCTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -127,10 +128,12 @@ public class MockVCIssuancePlugin implements VCIssuancePlugin {
 			log.error("Unable to get KYC exchange data from MOCK", e);
 		}
 
+		String uuid = new UUIDGenerator().generate();
+
 		Map<String, Object> verCredJsonObject = new HashMap<>();
 		verCredJsonObject.put("@context", vcCredentialContexts);
 		verCredJsonObject.put("type", Arrays.asList("VerifiableCredential", "MockVerifiableCredential"));
-		verCredJsonObject.put("id", "urn:uuid:3978344f-8596-4c3a-a978-8fcaba3903c5");
+		verCredJsonObject.put("id", uuid);
 		verCredJsonObject.put("issuer", "did:example:123456789");
 		verCredJsonObject.put("issuanceDate", getUTCDateTime());
 		verCredJsonObject.put("credentialSubject", formattedMap);
