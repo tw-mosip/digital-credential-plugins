@@ -35,7 +35,6 @@ class MdocGenerator {
         holderId: String,
         issuerKeyAndCertificate: String
     ): String? {
-        println("uuid ${UUID.randomUUID()}")
         val issuerDetails: KeyPairAndCertificate = PKCS12Reader().extract(issuerKeyAndCertificate)
 
         if (issuerDetails.keyPair == null) {
@@ -73,7 +72,6 @@ class MdocGenerator {
         mobileSecurityObjectGenerator.addDigestIdsForNamespace(NAMESPACE, calculateDigestsForNameSpace)
         //Validity of MSO & its signature is assigned here
         val currentTimestamp = Timestamp.now()
-        println("currentTimestamp: $currentTimestamp")
         val validUntil = Timestamp.ofEpochMilli(addYearsToDate(currentTimestamp.toEpochMilli(), 2))
         mobileSecurityObjectGenerator.setValidityInfo(
             currentTimestamp,
