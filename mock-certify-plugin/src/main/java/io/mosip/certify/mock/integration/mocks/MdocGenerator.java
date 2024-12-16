@@ -111,7 +111,6 @@ class MDoc {
         cborEncoder.encode(
                 new CborBuilder().addMap()
                         .put("docType", docType)
-                        .put("id", new UUIDGenerator().generate())
                         .put(CBORConverter.toDataItem("issuerSigned"), CBORConverter.toDataItem(issuerSigned.toMap()))
                         .end()
                         .build()
