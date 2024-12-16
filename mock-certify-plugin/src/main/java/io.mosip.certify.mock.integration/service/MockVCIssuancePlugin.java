@@ -25,6 +25,7 @@ import io.mosip.certify.api.exception.VCIExchangeException;
 import io.mosip.certify.api.spi.VCIssuancePlugin;
 import io.mosip.certify.api.util.ErrorConstants;
 import io.mosip.certify.core.exception.CertifyException;
+import io.mosip.certify.mock.integration.mocks.MdocGenerator;
 import io.mosip.certify.util.UUIDGenerator;
 import io.mosip.esignet.core.dto.OIDCTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -252,7 +253,7 @@ public class MockVCIssuancePlugin implements VCIssuancePlugin {
 			VCResult<String> vcResult = new VCResult<>();
 			String mdocVc = null;
 			try {
-				 mdocVc = new io.mosip.certify.mock.integration.mocks.MdocGenerator().generate(mockDataForMsoMdoc(documentNumber),holderId, issuerKeyAndCertificate);
+				 mdocVc = new MdocGenerator().generate(mockDataForMsoMdoc(documentNumber),holderId, issuerKeyAndCertificate);
 			} catch (Exception e) {
                 log.error("Exception on mdoc creation", e);
 				throw new VCIExchangeException(ErrorConstants.VCI_EXCHANGE_FAILED);
