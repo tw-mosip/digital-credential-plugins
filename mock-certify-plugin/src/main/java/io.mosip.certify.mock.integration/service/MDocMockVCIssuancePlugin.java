@@ -6,6 +6,7 @@ import io.mosip.certify.api.dto.VCResult;
 import io.mosip.certify.api.exception.VCIExchangeException;
 import io.mosip.certify.api.spi.VCIssuancePlugin;
 import io.mosip.certify.api.util.ErrorConstants;
+import io.mosip.certify.constants.VCFormats;
 import io.mosip.certify.core.exception.CertifyException;
 import io.mosip.certify.mock.integration.mocks.MdocGenerator;
 import io.mosip.esignet.core.dto.OIDCTransaction;
@@ -79,8 +80,7 @@ public class MDocMockVCIssuancePlugin implements VCIssuancePlugin {
             throw new VCIExchangeException(ErrorConstants.VCI_EXCHANGE_FAILED);
         }
 
-        //TODO: Extract constant for VCFormat
-        if(vcRequestDto.getFormat().equals("mso_mdoc")){
+        if(vcRequestDto.getFormat().equals(VCFormats.MSO_MDOC)){
             VCResult<String> vcResult = new VCResult<>();
             String mdocVc;
             try {
@@ -90,7 +90,7 @@ public class MDocMockVCIssuancePlugin implements VCIssuancePlugin {
                 throw new VCIExchangeException(ErrorConstants.VCI_EXCHANGE_FAILED);
             }
             vcResult.setCredential(mdocVc);
-            vcResult.setFormat("mso_mdoc");
+            vcResult.setFormat(VCFormats.MSO_MDOC);
             return  vcResult;
         }
         log.error("not implemented the format {}", vcRequestDto);
