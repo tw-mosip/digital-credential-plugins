@@ -44,8 +44,8 @@ public class MdocGenerator {
      * Root certificate is not available as of now and is a limitation.
      */
     public String generate(Map<String, Object> data, String holderId, String issuerKeyAndCertificate) throws Exception {
-        PKCS12Reader pkcs12Reader = new PKCS12Reader();
-        KeyPairAndCertificate issuerDetails = pkcs12Reader.extract(issuerKeyAndCertificate);
+        KeyPairAndCertificateExtractor keyPairAndCertificateExtractor = new KeyPairAndCertificateExtractor();
+        KeyPairAndCertificate issuerDetails = keyPairAndCertificateExtractor.extract(issuerKeyAndCertificate);
 
         if (issuerDetails.keyPair() == null) {
             throw new RuntimeException("Unable to load Crypto details");
