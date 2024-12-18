@@ -56,7 +56,7 @@ public class MDocMockVCIssuancePlugin implements VCIssuancePlugin {
     @Value("${mosip.certify.cache.store.individual-id}")
     private boolean storeIndividualId;
 
-    @Value("${mosip.certify.mock.vciplugin.issuer.key-cert:empty}")
+    @Value("${mosip.certify.mock.vciplugin.mdoc.issuer-key-cert:empty}")
     private String issuerKeyAndCertificate = null;
 
     private static final String ACCESS_TOKEN_HASH = "accessTokenHash";
