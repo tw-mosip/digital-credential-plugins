@@ -18,8 +18,8 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git://github.com/mosip/digital-credential-plugins.git</connection>
-        <developerConnection>scm:git:ssh://github.com:mosip/digital-credential-plugins.git</developerConnection>
+        <connection>scm:git:git://github.com/inji/digital-credential-plugins.git</connection>
+        <developerConnection>scm:git:ssh://github.com:inji/digital-credential-plugins.git</developerConnection>
         <url>https://github.com/inji/digital-credential-plugins</url>
         <tag>HEAD</tag>
     </scm>

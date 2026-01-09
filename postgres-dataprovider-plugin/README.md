@@ -104,11 +104,11 @@ sequenceDiagram
       ```
     - When the authentication is done using this particular identifier then the record from certify tables can be fetched by the postgres plugin and returned as a JSON Object.
 
-2. For referring the table creation and template insertion, see the sql scripts under db_scripts/mosip_certify/ddl folder of inji_certify: [db_scripts](https://github.com/mosip/inji-certify/tree/master/db_scripts/mosip_certify/ddl)
+2. For referring the table creation and template insertion, see the sql scripts under db_scripts/mosip_certify/ddl folder of inji_certify: [db_scripts](https://github.com/inji/inji-certify/tree/master/db_scripts/mosip_certify/ddl)
 
 3. inji-config changes:
-    - Refer to the properties file in [inji-config](https://github.com/mosip/inji-config) that corresponds to the postgres plugin implementation.
-      [Certify Postgres Land Registry](https://github.com/mosip/inji-config/blob/develop/certify-postgres-landregistry.properties)
+    - Refer to the properties file in [inji-config](https://github.com/inji/inji-config) that corresponds to the postgres plugin implementation.
+      [Certify Postgres Land Registry](https://github.com/inji/inji-config/blob/develop/certify-postgres-landregistry.properties)
     - The value for the property `mosip.certify.integration.data-provider-plugin` must be set to `PostgresDataProviderPlugin`
     - Refer to the below property for setting the query value against the scope for the credential that is to be issued:
        ```
