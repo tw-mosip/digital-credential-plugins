@@ -9,7 +9,7 @@
 	
 	<name>sunbird-rc-esignet-integration-impl</name>
 	<description>Sunbird-RC plugin implementation that is used for the integration with eSignet</description>
-	<url>https://github.com/mosip/digital-credential-plugins</url>
+	<url>https://github.com/inji/digital-credential-plugins</url>
 	
 	<licenses>
 		<license>
@@ -20,7 +20,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/mosip/digital-credential-plugins.git</connection>
 		<developerConnection>scm:git:ssh://github.com:mosip/digital-credential-plugins.git</developerConnection>
-		<url>https://github.com/mosip/digital-credential-plugins</url>
+		<url>https://github.com/inji/digital-credential-plugins</url>
 		<tag>HEAD</tag>
 	</scm>
 	<developers>
@@ -28,7 +28,7 @@
 			<name>Mosip</name>
 			<email>mosip.emailnotifier@gmail.com</email>
 			<organization>io.mosip</organization>
-			<organizationUrl>https://github.com/mosip/digital-credential-plugins</organizationUrl>
+			<organizationUrl>https://www.mosip.io</organizationUrl>
 		</developer>
 	</developers>
 	<properties>

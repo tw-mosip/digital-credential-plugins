@@ -6,14 +6,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.mosip.certify.sunbirdrc</groupId>
+    <groupId>io.inji.certify.sunbirdrc</groupId>
     <artifactId>sunbird-rc-certify-integration-impl</artifactId>
     <version>0.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>sunbird-rc-certify-integration-impl</name>
     <description>Sunbird-RC plugin implementation that is used for the integration with certify</description>
-    <url>https://github.com/mosip/digital-credential-plugins</url>
+    <url>https://github.com/inji/digital-credential-plugins</url>
 
     <licenses>
         <license>
@@ -24,15 +24,15 @@
     <scm>
         <connection>scm:git:git://github.com/mosip/digital-credential-plugins.git</connection>
         <developerConnection>scm:git:ssh://github.com:mosip/digital-credential-plugins.git</developerConnection>
-        <url>https://github.com/mosip/digital-credential-plugins</url>
+        <url>https://github.com/inji/digital-credential-plugins</url>
         <tag>HEAD</tag>
     </scm>
     <developers>
         <developer>
             <name>Mosip</name>
             <email>mosip.emailnotifier@gmail.com</email>
-            <organization>io.mosip</organization>
-            <organizationUrl>https://www.mosip.io</organizationUrl>
+            <organization>io.inji</organization>
+            <organizationUrl>https://inji.io</organizationUrl>
         </developer>
     </developers>
     <properties>
