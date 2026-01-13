@@ -27,54 +27,55 @@ import java.time.LocalDateTime;
 
 @Component
 @Slf4j
-@ConditionalOnProperty(value = "mosip.certify.integration.data-provider-plugin", havingValue = "IdaDataProviderPluginImpl")
-public class AuthTransactionHelper {
-	
+@ConditionalOnProperty(value = "mosip.certify.integration.vci-plugin", havingValue = "IdaVCIssuancePluginImpl")
+@Deprecated
+public class VCIAuthTransactionHelper {
+
     private static final String AUTH_TOKEN_CACHE = "authtokens";
 
     @Autowired
     private ObjectMapper objectMapper;
-	
+
     @Autowired
     private RestTemplate restTemplate;
-	
+
     @Value("${mosip.certify.authenticator.ida.auth-token-url}")
     private String authTokenUrl;
-	
+
     @Value("${mosip.certify.authenticator.ida.client-id}")
     private String clientId;
-    
+
     @Value("${mosip.certify.authenticator.ida.secret-key}")
     private String secretKey;
-    
+
     @Value("${mosip.certify.authenticator.ida.app-id}")
     private String appId;
-	
+
     @Cacheable(value = AUTH_TOKEN_CACHE, key = "#root.target.AUTH_TOKEN_CACHE_KEY")
     public String getAuthToken() throws Exception {
-    	log.info("Started to get auth-token with appId : {} && clientId : {}",
+        log.info("Started to get auth-token with appId : {} && clientId : {}",
                 appId, clientId);
-    	
-	RequestWrapper<ClientIdSecretKeyRequest> authRequest = new RequestWrapper<>();
-    	authRequest.setRequesttime(LocalDateTime.now());
-    	ClientIdSecretKeyRequest clientIdSecretKeyRequest = new ClientIdSecretKeyRequest(clientId, secretKey, appId);
-    	authRequest.setRequest(clientIdSecretKeyRequest);
-    	
-    	String requestBody = objectMapper.writeValueAsString(authRequest);
-    	RequestEntity requestEntity = RequestEntity
-                 .post(UriComponentsBuilder.fromUriString(authTokenUrl).build().toUri())
-                 .contentType(MediaType.APPLICATION_JSON)
-                 .body(requestBody);
+
+        RequestWrapper<ClientIdSecretKeyRequest> authRequest = new RequestWrapper<>();
+        authRequest.setRequesttime(LocalDateTime.now());
+        ClientIdSecretKeyRequest clientIdSecretKeyRequest = new ClientIdSecretKeyRequest(clientId, secretKey, appId);
+        authRequest.setRequest(clientIdSecretKeyRequest);
+
+        String requestBody = objectMapper.writeValueAsString(authRequest);
+        RequestEntity requestEntity = RequestEntity
+                .post(UriComponentsBuilder.fromUriString(authTokenUrl).build().toUri())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestBody);
         ResponseEntity<ResponseWrapper> responseEntity = restTemplate.exchange(requestEntity,
-                 new ParameterizedTypeReference<ResponseWrapper>() {});
-        
+                new ParameterizedTypeReference<ResponseWrapper>() {});
+
         String authToken = responseEntity.getHeaders().getFirst("authorization");
         return authToken;
-     }
-    
+    }
+
     @CacheEvict(value = AUTH_TOKEN_CACHE, allEntries = true)
     public void purgeAuthTokenCache() {
-    	log.info("Evicting entry from AUTH_TOKEN_CACHE");
+        log.info("Evicting entry from AUTH_TOKEN_CACHE");
     }
 
 }
