@@ -320,7 +320,10 @@ private void validateContextUrl(Template template,List<String> vcRequestContextL
         template.merge(new VelocityContext(),writer);
         Map<String,Object> templateMap = mapper.readValue(writer.toString(),Map.class);
         List<String> contextList=(List<String>) templateMap.get("@context");
+        log.info("Template context list: {}", contextList);
+        log.info("VC request context list: {}", vcRequestContextList);
         for(String contextUrl:vcRequestContextList){
+            log.info("Validating contextUrl: {}", contextUrl);
             if(!contextList.contains(contextUrl)){
                 log.error("ContextUrl is not supported");
                 throw new VCIExchangeException(ErrorConstants.VCI_EXCHANGE_FAILED);
