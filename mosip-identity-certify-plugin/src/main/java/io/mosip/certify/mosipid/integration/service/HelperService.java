@@ -43,7 +43,7 @@ public class HelperService {
     private SignatureService signatureService;
 
     @Value("${mosip.certify.ida.include-payload:true}")
-    private String includePayload;
+    private boolean includePayload;
 
     protected String getRequestSignature(String request) {
         JWTSignatureRequestDto jwtSignatureRequestDto = new JWTSignatureRequestDto();
