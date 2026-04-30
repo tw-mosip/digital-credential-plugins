@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@ConditionalOnProperty(value = "mosip.certify.integration.data-provider-plugin", havingValue = "IdaDataProviderPluginImpl")
+@ConditionalOnProperty(value = "mosip.certify.integration.ida-plugin-helper", havingValue = "IdaPluginImpl")
 public class HelperService {
 
     public static final String UTC_DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -41,11 +41,14 @@ public class HelperService {
     @Autowired
     private SignatureService signatureService;
 
+    @Value("${{mosip.certify.ida.include-payload:true}")
+    private String includePayload;
+
     protected String getRequestSignature(String request) {
         JWTSignatureRequestDto jwtSignatureRequestDto = new JWTSignatureRequestDto();
         jwtSignatureRequestDto.setApplicationId(OIDC_PARTNER_APP_ID);
         jwtSignatureRequestDto.setReferenceId("");
-        jwtSignatureRequestDto.setIncludePayload(true);
+        jwtSignatureRequestDto.setIncludePayload(includePayload);
         jwtSignatureRequestDto.setIncludeCertificate(true);
         jwtSignatureRequestDto.setDataToSign(HelperService.b64Encode(request));
         JWTSignatureResponseDto responseDto = signatureService.jwtSign(jwtSignatureRequestDto);
