@@ -11,6 +11,7 @@ import io.mosip.kernel.signature.dto.JWTSignatureResponseDto;
 import io.mosip.kernel.signature.service.SignatureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,7 +42,7 @@ public class HelperService {
     @Autowired
     private SignatureService signatureService;
 
-    @Value("${{mosip.certify.ida.include-payload:true}")
+    @Value("${mosip.certify.ida.include-payload:true}")
     private String includePayload;
 
     protected String getRequestSignature(String request) {
